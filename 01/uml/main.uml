@@ -1,0 +1,10 @@
+@startuml
+start
+:Enter a>
+:a<
+:Enter b>
+:b<
+:m := a * b]
+:Output m>
+end
+@enduml
