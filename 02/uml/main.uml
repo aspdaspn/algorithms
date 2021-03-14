@@ -1,0 +1,26 @@
+@startuml
+!pragma useVerticalIf on
+|Program|
+start
+:allocate Input;
+repeat
+:Ask to enter an Integer>
+|#AntiqueWhite|User|
+:User Input<
+|Program|
+repeat while(Input correct?) is (no)
+-yes
+if (Input := 1) then (yes)
+:False;
+stop
+elseif (Input := [2, 3, 5, 7, 11, 13, 17, 19, 23]) then (yes)
+:True;
+stop
+elseif (Input % [2, 3, 5, 7, 11, 13, 17, 19, 23] := 0) then (yes)
+:False;
+stop
+endif
+:Print Output;
+:free Input;
+end
+@enduml
