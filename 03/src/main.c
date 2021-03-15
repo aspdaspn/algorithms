@@ -29,13 +29,42 @@ long quickPowRecurs(int a, int b) {
 	}
 }
 
+// 4. Реализовать нахождение количества маршрутов шахматного короля с препятствиями. (1 - препятствие, 0 - свободно)
+#define ROW 8
+#define COL 8
+
+const int board[ROW][COL] = 
+	{{0, 0, 1, 0, 0, 0, 0, 0},
+	 {0, 0, 0, 0, 0, 0, 0, 0},
+	 {0, 0, 0, 0, 0, 0, 0, 0},
+	 {0, 0, 0, 0, 0, 0, 0, 0},
+	 {0, 0, 0, 0, 0, 0, 0, 0},
+	 {0, 0, 0, 0, 0, 0, 0, 0},
+	 {0, 0, 0, 0, 0, 1, 0, 0},
+	 {0, 0, 0, 0, 0, 0, 0, 0}};
+
+int routes(int x, int y) {
+	if (x == 0 && y == 0)
+		return 0;
+	if (x == 0 ^ y == 0)
+		return 1;
+	else
+		return routes(x, y - 1) + routes(x - 1, y);
+}
+
 int main(int argc, char** args) {
 	int dec = 137;
 	printf("Decimal: %d, Binary: %d\n", dec, dec2Bin(dec));
+	
 	int base = 2;
 	int exp = 10;
 	printf("%d ^ %d = %ld\n", base, exp, powRecurs(base, exp));
 	printf("%d ^ %d = %ld\n", base, exp, quickPowRecurs(base, exp));
 	
+	for (int y = 0; y < ROW; y++) {
+		for (int x = 0; x < COL; x++)
+			printf("%5d", routes(x, y));
+		printf("\n");
+	}
 	return SUCCESS;
 }
