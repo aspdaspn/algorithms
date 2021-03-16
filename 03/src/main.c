@@ -37,7 +37,7 @@ const int board[ROW][COL] =
 	{{0, 0, 1, 0, 0, 0, 0, 0},
 	 {0, 0, 0, 0, 0, 0, 0, 0},
 	 {0, 0, 0, 0, 0, 0, 0, 0},
-	 {0, 0, 0, 0, 0, 0, 0, 0},
+	 {1, 0, 0, 0, 0, 0, 0, 0},
 	 {0, 0, 0, 0, 0, 0, 0, 0},
 	 {0, 0, 0, 0, 0, 0, 0, 0},
 	 {0, 0, 0, 0, 0, 1, 0, 0},
@@ -46,10 +46,14 @@ const int board[ROW][COL] =
 int routes(int x, int y) {
 	if (x == 0 && y == 0)
 		return 0;
-	if (x == 0 ^ y == 0)
-		return 1;
+	else if ((x == 0 && y == 1) || (x == 1 && y == 0))
+		return (1 && !board[y][x]);
+	else if (x == 0 && y > 1)
+		return (board[y][x] ? 0 : routes(x, y - 1));
+	else if (x > 1 && y == 0)
+		return (board[y][x] ? 0 : routes(x - 1, y));
 	else
-		return routes(x, y - 1) + routes(x - 1, y);
+		return (board[y][x] ? 0 : (routes(x, y - 1) + routes(x - 1, y)));
 }
 
 int main(int argc, char** args) {
