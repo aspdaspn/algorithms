@@ -34,10 +34,9 @@ void bubbleSort(int *array, int size) {
 }
 
 void printAr(int* array, int row, int col) {
-	int c = 0;
 	for (int i = 0; i < row; i++) {
 		for (int j = 0; j < col; j++)
-			printf("%d ", *(array + c++));
+			printf("%d ", *(array + (ROW * i + j)));
 		printf("\n");
 	}
 }
