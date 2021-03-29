@@ -1,0 +1,28 @@
+@startuml
+|#AntiqueWhite|User|
+|Program|
+start
+:i := 0]
+:Enter 11 Numbers>
+repeat
+	:Enter number #i>
+	|User|
+	:Array [i] <
+	|Program|
+	: i++]
+repeat while (i < 11) is (yes)
+->no;
+:i := 10]
+repeat
+	:y := sqrt(|Array[i]|) + 
+	+ 5 * Array[i]^3]
+	if (y > 400) then (yes)
+		:Number Array[i] is too big>
+	else (no)
+		:Array[i]>
+	endif
+		: i--]
+repeat while (i >= 0) is (yes)
+->no;
+end
+@enduml
