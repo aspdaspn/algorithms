@@ -87,12 +87,29 @@ void copyList(Stack *from, Stack *to) {
 		printf("Stack overflow\n");
 		return;
 	}
-	tmp -> dat = from -> head -> dat;
+	tmp -> dat = current -> dat;
 	tmp -> next = to -> head;
+	to -> head = tmp;
 	current = current -> next;
 	} while (current != NULL);
 }
 
+bool ifSorted(Stack *stack) {
+	Node *current = stack -> head;
+	if (current == NULL) {
+		printf("Empty stack\n");
+		return false;
+	}
+	Node comp;
+	comp.dat = current -> dat;
+	while (current != NULL) {
+		if (comp.dat > current -> dat)
+			return false;
+		comp.dat = current -> dat;
+		current = current -> next;
+	}
+	return true;
+}
 
 void checkBraces(Stack *stack) {
 	char ts[STRINGSIZE];
@@ -141,5 +158,7 @@ int main(int argc, char** args) {
 	init(cp);
 	copyList(st, cp);
 	printStack(cp);
+	// Task 3, if List is sorted
+	printf("%s\n", ifSorted(cp) ? "List is sorted" : "List is not sorted");
 	return EXIT_SUCCESS;
 }
