@@ -76,21 +76,35 @@ void printStack(Stack *stack) {
 }
 
 void copyList(Stack *from, Stack *to) {
-	if (from -> size == 0) {
+	if (from -> head == NULL) {
 		printf("Empty Source, nothing to copy.\n");
 		return;
 	}
-	Node *current = from -> head;
-	do {
-	Node *tmp = (Node *) malloc(sizeof(Node));
-	if (tmp == NULL) {
-		printf("Stack overflow\n");
+	
+	Node *new = (Node *) malloc(sizeof(Node));
+	if (new == NULL) {
+		printf("Error in memory allocation\n");
 		return;
 	}
-	tmp -> dat = current -> dat;
-	tmp -> next = to -> head;
-	to -> head = tmp;
-	current = current -> next;
+	
+	to -> head = new;
+	Node *prev = NULL;
+	Node *current = from -> head;
+	
+	do {
+		new -> dat = current -> dat;
+		prev = new;
+		to -> size++;
+
+		new = (Node *) malloc(sizeof(Node));
+		if (new == NULL) {
+			printf("Stack overflow\n");
+			return;
+		}
+		if (current = current -> next)
+			prev -> next = new;
+		else
+			prev -> next = NULL;
 	} while (current != NULL);
 }
 
