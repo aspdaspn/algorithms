@@ -76,23 +76,54 @@ void printStack(Stack *stack) {
 }
 
 void copyList(Stack *from, Stack *to) {
-	if (from -> size == 0) {
+	if (from -> head == NULL) {
 		printf("Empty Source, nothing to copy.\n");
 		return;
 	}
-	Node *current = from -> head;
-	do {
-	Node *tmp = (Node *) malloc(sizeof(Node));
-	if (tmp == NULL) {
-		printf("Stack overflow\n");
+	
+	Node *new = (Node *) malloc(sizeof(Node));
+	if (new == NULL) {
+		printf("Error in memory allocation\n");
 		return;
 	}
-	tmp -> dat = from -> head -> dat;
-	tmp -> next = to -> head;
-	current = current -> next;
+	
+	to -> head = new;
+	Node *prev = NULL;
+	Node *current = from -> head;
+	
+	do {
+		new -> dat = current -> dat;
+		prev = new;
+		to -> size++;
+
+		new = (Node *) malloc(sizeof(Node));
+		if (new == NULL) {
+			printf("Stack overflow\n");
+			return;
+		}
+		if (current = current -> next)
+			prev -> next = new;
+		else
+			prev -> next = NULL;
 	} while (current != NULL);
 }
 
+bool ifSorted(Stack *stack) {
+	Node *current = stack -> head;
+	if (current == NULL) {
+		printf("Empty stack\n");
+		return false;
+	}
+	Node comp;
+	comp.dat = current -> dat;
+	while (current != NULL) {
+		if (comp.dat > current -> dat)
+			return false;
+		comp.dat = current -> dat;
+		current = current -> next;
+	}
+	return true;
+}
 
 void checkBraces(Stack *stack) {
 	char ts[STRINGSIZE];
@@ -141,5 +172,7 @@ int main(int argc, char** args) {
 	init(cp);
 	copyList(st, cp);
 	printStack(cp);
+	// Task 3, if List is sorted
+	printf("%s\n", ifSorted(cp) ? "List is sorted" : "List is not sorted");
 	return EXIT_SUCCESS;
 }
