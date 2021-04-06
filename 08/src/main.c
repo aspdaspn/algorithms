@@ -6,7 +6,6 @@ typedef struct Node {
 	struct Node *right;
 } BinTreeIntNode;
 
-FILE *file;
 
 BinTreeIntNode* treeInsert(BinTreeIntNode *t, int data) {
 	BinTreeIntNode *newNode;
@@ -129,7 +128,6 @@ bool treeNodeDelete(BinTreeIntNode *root, int key) {
 int subTreeCount(BinTreeIntNode *node) {
 	if (!node)
 		return 0;
-	printf("%d ", node -> key);
 	if (node -> left == NULL && node -> right == NULL)
 		return 1;
 	else {
@@ -154,93 +152,89 @@ bool isBalanced(BinTreeIntNode *root) {
 		rc = subTreeCount(root -> right);
 	else
 		rc = 0;
-	
-	printf("lc: %d, rc: %d\n", lc, rc);
+
 	return (abs(lc - rc) <= 1);
 }
 
-BinTreeIntNode* balancedTree(int n) {
-	BinTreeIntNode *newNode;
-	int x;
-	int nL;
-	int nR;
-	if (n == 0) {
+BinTreeIntNode* binSearch(BinTreeIntNode *root, int value) {
+	if (root == NULL)
 		return NULL;
-	} else {
-		fscanf(file, "%d", &x);
-		nL = n / 2;
-		nR = n - nL - 1;
-		newNode = (BinTreeIntNode*) malloc(sizeof(BinTreeIntNode));
-		newNode -> key = x;
-		newNode -> left = balancedTree(nL);
-		newNode -> right = balancedTree(nR);
-	}
-	return newNode;
-}
+	if (root -> key == value)
+		return root;
 
-void balanceTest() {
-	BinTreeIntNode *tree = NULL;
-	file = fopen("../data/balance.txt", "r");
-	if (file == NULL) {
-		printf("%s \n", "Cannot open file");
-		return;
+	BinTreeIntNode *current = root;
+	while (current -> key != value) {
+		if (value < current -> key)
+			current = current -> left;
+		else
+			current = current -> right;
+
+		if (current == NULL)
+			return NULL;
 	}
-	const int count = 15;
-	tree = balancedTree(count);
-	fclose(file);
-	//printBinTree(tree);
-	printf("%d\n", isBalanced(tree));
 }
 
 int main(int argc, char** args) {
+	// Task 1 Balanced tree
+	BinTreeIntNode *tree = treeInsert(NULL, 10);
+	treeInsert(tree, 5);
+	treeInsert(tree, 7);
+	treeInsert(tree, 3);
+	treeInsert(tree, 15);
+	treeInsert(tree, 25);
+	treeInsert(tree, 37);
+	printBinTree(tree);
+	printf("\n");
+	printf("The above tree is%s balanced", isBalanced(tree) ? "" : " not");
+	printf("\n");
+
+	treeInsert(tree, 47);
+	treeInsert(tree, 39);
+	printBinTree(tree);
+	printf("\n");
+	printf("The above tree is%s balanced", isBalanced(tree) ? "" : " not");
+	printf("\n");
+	
+	// Task 2 more trees
 	srand(time(NULL));
+	
 	// The size or array.
-	#define ARSIZE 5
+	#define ARSIZE 50
+	
 	// The number of elements in every tree
-	const int NODES = 10;
+	const int NODES = 10000;
+	
 	// The random values will be generated in range 0 < r < BORDER
 	const int BORDER = 100; 
+	
 	BinTreeIntNode *bt[ARSIZE];
-	bt[0] = treeInsert(NULL, 10);
-	treeInsert(bt[0], 11);
-	treeInsert(bt[0], 12);
-	treeInsert(bt[0], 7);
-	treeInsert(bt[0], 8);
-	treeInsert(bt[0], 5);
-	printBinTree(bt[0]);
 
-
-	// Populating the tree with random values
+	// Populating the trees with random values
 	for (int i = 0; i < ARSIZE; ++i) {
-		bt[i] = treeInsert(NULL, 10 + i);
+		bt[i] = treeInsert(NULL, rand() % BORDER);
+		for (int n = 0; n < NODES; ++n)
+			treeInsert(bt[i], rand() % BORDER);
 	}
 
-//	BinTreeIntNode *tree = treeInsert(tree, 10);
-//  treeInsert(tree, 8);
-//  treeInsert(tree, 19);
-//  treeInsert(tree, 5);
-//  treeInsert(tree, 9);
-//  treeInsert(tree, 16);
-//  treeInsert(tree, 21);
-//  treeInsert(tree, 3);
-//  treeInsert(tree, 24);
-//  printBinTree(tree);
-//  printf(" \n");
-//	printf("%d\n", isBalanced(tree));
-//
-//  treeNodeDelete(tree, 5);
-//  treeNodeDelete(tree, 9);
-//  printBinTree(tree);
-//	printf("%d\n", isBalanced(tree));
-  //printf(" \n");
-  //treeNodeDelete(tree, 19);
-  //printBinTree(tree);
-  //printf(" \n");
-  //treeNodeDelete(tree, 8);
-  //printBinTree(tree);
-  //printf(" \n");
+	// Number of balanced trees
+	int b = 0;
 
-	//balanceTest();
-  printf(" \n");
+	for (int i = 0; i < ARSIZE; ++i) {
+		if (isBalanced(bt[i]))
+			++b;
+	}
+	printf("We calculated %d binary trees of %d elements. The %d%% of them were balanced.\n", 
+			ARSIZE, NODES, b * 100 / ARSIZE);
+
+	// Task 3 Binary Search
+	int found = 10;
+
+	BinTreeIntNode *f = binSearch(tree, found);
+	if (f != NULL)
+		printf("You searched for a value %d. We found %d value at %p address.\n", 
+			found, binSearch(tree, found) -> key, binSearch(tree, found));
+	else
+		printf("Your value %d is not present.\n", found);
+
 	return EXIT_SUCCESS;
 }
