@@ -6,6 +6,8 @@ typedef struct Node {
 	struct Node *right;
 } BinTreeIntNode;
 
+FILE *file;
+
 BinTreeIntNode* treeInsert(BinTreeIntNode *t, int data) {
 	BinTreeIntNode *newNode;
 	newNode = (BinTreeIntNode*) malloc(sizeof(BinTreeIntNode));
@@ -87,7 +89,7 @@ bool treeNodeDelete(BinTreeIntNode *root, int key) {
 			current = current -> right;
 			isLeftChild = false;
 		}
-		if (current = NULL)
+		if (current == NULL)
 			return false;
 	}
 
@@ -124,26 +126,121 @@ bool treeNodeDelete(BinTreeIntNode *root, int key) {
 	return true;
 }
 
+int subTreeCount(BinTreeIntNode *node) {
+	if (!node)
+		return 0;
+	printf("%d ", node -> key);
+	if (node -> left == NULL && node -> right == NULL)
+		return 1;
+	else {
+		int c;
+		c = 1 + subTreeCount(node -> left) + subTreeCount(node -> right);
+		return c;
+	}
+}
+
+bool isBalanced(BinTreeIntNode *root) {
+	if (!root)
+		return false;
+	int lc;		// Left subtree counter
+	int rc;		// Right subtree counter
+	
+	if (root -> left)
+		lc = subTreeCount(root -> left);
+	else
+		lc = 0;
+	
+	if (root -> right)
+		rc = subTreeCount(root -> right);
+	else
+		rc = 0;
+	
+	printf("lc: %d, rc: %d\n", lc, rc);
+	return (abs(lc - rc) <= 1);
+}
+
+BinTreeIntNode* balancedTree(int n) {
+	BinTreeIntNode *newNode;
+	int x;
+	int nL;
+	int nR;
+	if (n == 0) {
+		return NULL;
+	} else {
+		fscanf(file, "%d", &x);
+		nL = n / 2;
+		nR = n - nL - 1;
+		newNode = (BinTreeIntNode*) malloc(sizeof(BinTreeIntNode));
+		newNode -> key = x;
+		newNode -> left = balancedTree(nL);
+		newNode -> right = balancedTree(nR);
+	}
+	return newNode;
+}
+
+void balanceTest() {
+	BinTreeIntNode *tree = NULL;
+	file = fopen("../data/balance.txt", "r");
+	if (file == NULL) {
+		printf("%s \n", "Cannot open file");
+		return;
+	}
+	const int count = 15;
+	tree = balancedTree(count);
+	fclose(file);
+	//printBinTree(tree);
+	printf("%d\n", isBalanced(tree));
+}
 
 int main(int argc, char** args) {
-	BinTreeIntNode *tree = treeInsert(tree, 10);
-  treeInsert(tree, 8);
-  treeInsert(tree, 19);
-  treeInsert(tree, 5);
-  treeInsert(tree, 9);
-  treeInsert(tree, 16);
-  treeInsert(tree, 21);
-  printBinTree(tree);
-  printf(" \n");
+	srand(time(NULL));
+	// The size or array.
+	#define ARSIZE 5
+	// The number of elements in every tree
+	const int NODES = 10;
+	// The random values will be generated in range 0 < r < BORDER
+	const int BORDER = 100; 
+	BinTreeIntNode *bt[ARSIZE];
+	bt[0] = treeInsert(NULL, 10);
+	treeInsert(bt[0], 11);
+	treeInsert(bt[0], 12);
+	treeInsert(bt[0], 7);
+	treeInsert(bt[0], 8);
+	treeInsert(bt[0], 5);
+	printBinTree(bt[0]);
 
-  treeNodeDelete(tree, 5);
-  printBinTree(tree);
-  printf(" \n");
-  treeNodeDelete(tree, 19);
-  printBinTree(tree);
-  printf(" \n");
-  treeNodeDelete(tree, 8);
-  printBinTree(tree);
+
+	// Populating the tree with random values
+	for (int i = 0; i < ARSIZE; ++i) {
+		bt[i] = treeInsert(NULL, 10 + i);
+	}
+
+//	BinTreeIntNode *tree = treeInsert(tree, 10);
+//  treeInsert(tree, 8);
+//  treeInsert(tree, 19);
+//  treeInsert(tree, 5);
+//  treeInsert(tree, 9);
+//  treeInsert(tree, 16);
+//  treeInsert(tree, 21);
+//  treeInsert(tree, 3);
+//  treeInsert(tree, 24);
+//  printBinTree(tree);
+//  printf(" \n");
+//	printf("%d\n", isBalanced(tree));
+//
+//  treeNodeDelete(tree, 5);
+//  treeNodeDelete(tree, 9);
+//  printBinTree(tree);
+//	printf("%d\n", isBalanced(tree));
+  //printf(" \n");
+  //treeNodeDelete(tree, 19);
+  //printBinTree(tree);
+  //printf(" \n");
+  //treeNodeDelete(tree, 8);
+  //printBinTree(tree);
+  //printf(" \n");
+
+	//balanceTest();
   printf(" \n");
 	return EXIT_SUCCESS;
 }
