@@ -1,0 +1,12 @@
+administrator@ILYAWIN10-PC:~/geekbrains/algorithms/08/build$ make && ./project.bin
+Scanning dependencies of target project.bin
+[ 50%] Building C object CMakeFiles/project.bin.dir/src/main.c.o
+[100%] Linking C executable project.bin
+[100%] Built target project.bin
+10(5(3,7),15(NULL,25(NULL,37)))
+The above tree is balanced
+10(5(3,7),15(NULL,25(NULL,37(NULL,47(39,NULL)))))
+The above tree is not balanced
+We calculated 50 binary trees of 10000 elements. The 4% of them were balanced.
+You searched for a value 47. We found value 47 at 0x7fffe65af790 address.
+administrator@ILYAWIN10-PC:~/geekbrains/algorithms/08/build$
