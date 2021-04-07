@@ -157,21 +157,18 @@ bool isBalanced(BinTreeIntNode *root) {
 }
 
 BinTreeIntNode* binSearch(BinTreeIntNode *root, int value) {
-	if (root == NULL)
+	if (root) {
+		if (root -> key == value)
+			return root;
+		else {
+			BinTreeIntNode *current = NULL;
+			current = binSearch(root -> left, value);
+			if (!current)
+				current = binSearch(root -> right, value);
+			return current;
+		}
+	} else
 		return NULL;
-	if (root -> key == value)
-		return root;
-
-	BinTreeIntNode *current = root;
-	while (current -> key != value) {
-		if (value < current -> key)
-			current = current -> left;
-		else
-			current = current -> right;
-
-		if (current == NULL)
-			return NULL;
-	}
 }
 
 int main(int argc, char** args) {
@@ -227,14 +224,14 @@ int main(int argc, char** args) {
 			ARSIZE, NODES, b * 100 / ARSIZE);
 
 	// Task 3 Binary Search
-	int found = 10;
+	int find = 47;
 
-	BinTreeIntNode *f = binSearch(tree, found);
+	BinTreeIntNode *f = binSearch(tree, find);
 	if (f != NULL)
-		printf("You searched for a value %d. We found %d value at %p address.\n", 
-			found, binSearch(tree, found) -> key, binSearch(tree, found));
+		printf("You searched for a value %d. We found value %d at %p address.\n", 
+			find, binSearch(tree, find) -> key, binSearch(tree, find));
 	else
-		printf("Your value %d is not present.\n", found);
+		printf("Your value %d is not present.\n", find);
 
 	return EXIT_SUCCESS;
 }
