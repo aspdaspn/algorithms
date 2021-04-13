@@ -9,6 +9,7 @@
 // ASCII Codes
 #define UP_A 65
 #define LOW_A 97
+#define SPACE 32
 
 // ASCII transformation, conditions
 #define IS_UP(l) ((UP_A <= l) && (l < (UP_A + ALPHABET)))
@@ -48,6 +49,39 @@ char* caesar(char* in, int key, bool encrypt) {
 	return output;
 }
 
+char* shuffle(char* in, int key, bool encrypt) {
+	if (key < 0)
+		key = -key;
+	
+	int i = 0;
+	int o = 0;
+	int size = 0;
+	int temp[STRSIZE] = { 0 };
+
+	while (in[i] != '\0' && i < STRSIZE) {
+		temp[i] = in[i];
+		++i;
+		++size;
+	}
+
+	if (size / key * key < size) {
+		size = size / key * key + key;
+		while (i < size) {
+			temp[i] = SPACE;
+			++i;
+		}
+	}
+	
+	for (int i = 0; i < size; ++i)
+		output[i] = temp[i];
+	++i;
+	output[i] = '\0';
+	printf("%d\n", size);
+	return output;
+}
+
+
+
 int main(int argc, char** args) {
 	// Task 1
 	char cipher1[] = {'a','A','b','B',' ','-','.','1','y','Y','z','Z'};
@@ -55,6 +89,10 @@ int main(int argc, char** args) {
 	printf("%s\n", out1);
 	char* decrypt1 = caesar(out1, 3, false);
 	printf("%s\n", decrypt1);
-
+	
+	// Task 2
+	char* cipher2 = "this is the secret message";
+	char* decrypt2 = shuffle(cipher2, 4, true);
+	printf("%s\n", decrypt2);
 	return EXIT_SUCCESS;
 }
