@@ -27,45 +27,34 @@ char* caesar(char* in, int key, bool encrypt) {
 	if (key < 0)
 		key = ALPHABET + key;
 
+	if (!encrypt)
+		key = ALPHABET - key;
+
 	int i = 0;
 	int o = 0;
 
-	if (encrypt) {
-		while (in[i] != '\0' && i < STRSIZE) {
-			if (IS_IN_RANGE((int) in[i])) {
-				if (IS_LOW((int) in[i])) 
-					output[o] = LOW_2_UP((int) in[i]);
-				else
-					output[o] = in[i];
-				output[o] = ((output[o] - UP_A) + key) % (ALPHABET) + UP_A;
-				++o;
-			}
-			++i;
+	while (in[i] != '\0' && i < STRSIZE) {
+		if (IS_IN_RANGE((int) in[i])) {
+			if (IS_LOW((int) in[i])) 
+				output[o] = LOW_2_UP((int) in[i]);
+			else
+				output[o] = in[i];
+			output[o] = ((output[o] - UP_A) + key) % (ALPHABET) + UP_A;
+			++o;
 		}
-		output[o] = '\0';
-	} else {
-				key = ALPHABET - key;
-		while (in[i] != '\0' && i < STRSIZE) {
-			if (IS_IN_RANGE((int) in[i])) {
-				if (IS_LOW((int) in[i])) 
-					output[o] = LOW_2_UP((int) in[i]);
-				else
-					output[o] = in[i];
-				output[o] = ((output[o] - UP_A) + key) % (ALPHABET) + UP_A;
-				++o;
-			}
-			++i;
-		}
+		++i;
 	}
-
+	output[o] = '\0';
 	return output;
 }
 
 int main(int argc, char** args) {
-	char cipher1[] = {'a','A',' ','z','Z'};
+	// Task 1
+	char cipher1[] = {'a','A','b','B',' ','-','.','1','y','Y','z','Z'};
 	char* out1 = caesar(cipher1, 3, true);
 	printf("%s\n", out1);
 	char* decrypt1 = caesar(out1, 3, false);
 	printf("%s\n", decrypt1);
+
 	return EXIT_SUCCESS;
 }
