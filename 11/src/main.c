@@ -25,6 +25,8 @@ void clearString(char* in, int size) {
 }
 
 char* caesar(char* in, int key, bool encrypt) {
+	if (in == NULL)
+		return NULL;
 	// Preparing the key to be positive
 	if (key < 0)
 		key = ALPHABET + key;
@@ -55,6 +57,9 @@ char* caesar(char* in, int key, bool encrypt) {
 }
 
 char* shuffle(char* in, int key, bool encrypt) {
+	if (in == NULL)
+		return NULL;
+	
 	if (key < 0)
 		key = -key;
 	
