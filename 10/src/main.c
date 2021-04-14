@@ -3,6 +3,8 @@
 #define ARSIZE 10
 
 int simpleHashSum(char* in) {
+	if (in == NULL)
+		return 0;
 	int out = 0;
 	int i = 0;
 	while (in[i] != '\0') {
@@ -15,6 +17,8 @@ int simpleHashSum(char* in) {
 int collection[ARSIZE] = { 0 };
 
 int* exchange(int* money, int size, int sum) {
+	if (money == NULL || size == 0 || sum == 0)
+		return NULL;
 	int k = 0;
 	int subtotal = 0;
 
@@ -27,7 +31,12 @@ int* exchange(int* money, int size, int sum) {
 				break;
 			}
 	}
-	return collection;
+	if (subtotal == sum)
+		return collection;
+	else {
+		printf("Can't collect!\n");
+		return NULL;
+	}
 }
 
 int main(int argc, char** args) {
